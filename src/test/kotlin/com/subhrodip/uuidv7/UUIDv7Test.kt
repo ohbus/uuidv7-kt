@@ -230,7 +230,7 @@ class UUIDv7Test {
 
 	@Test
 	fun `sequence overflow increments logical timestamp and resets sequence`() {
-		val timestamp = System.currentTimeMillis()
+		val timestamp = System.currentTimeMillis() + 1_000
 		lastState().set((timestamp shl SEQUENCE_BITS) or SEQUENCE_MASK)
 
 		val uuid = UUIDv7.generate()
