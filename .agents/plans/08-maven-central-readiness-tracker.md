@@ -40,6 +40,7 @@ Prepare the project for Maven Central publishing through a guarded GitHub Action
 - [x] Signing key id is available as `SIGNING_KEY_ID`.
 - [x] Optional signing passphrase is available as `SIGNING_PASSWORD`.
 - [x] Blank `SIGNING_PASSWORD` is valid when the current key has no passphrase.
+- [x] Whitespace-only `SIGNING_PASSWORD` is normalized to blank in the release workflow.
 - [ ] Validate signed publication in the first Maven Central release run.
 
 ## Central Publishing

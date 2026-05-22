@@ -46,6 +46,7 @@ Publishing credentials:
 - Credentials come from `MAVEN_CENTRAL_USERNAME` and `MAVEN_CENTRAL_PASSWORD`.
 - Signing uses in-memory `GPG_KEY_CONTENTS`, `SIGNING_KEY_ID`, and optional `SIGNING_PASSWORD`.
 - `SIGNING_PASSWORD` may be blank when the GPG key has no passphrase.
+- Whitespace-only `SIGNING_PASSWORD` values are normalized to blank before Gradle runs.
 - Central publishing must use `publishAndReleaseToMavenCentral`.
 
 ## Consumer Rules

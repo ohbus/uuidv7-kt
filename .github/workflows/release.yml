@@ -143,6 +143,23 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
 
+      - name: Normalize signing password
+        id: signing
+        env:
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${SIGNING_PASSWORD//[[:space:]]/}" ]]; then
+            echo "password=" >> "$GITHUB_OUTPUT"
+          else
+            {
+              echo "password<<EOF"
+              echo "$SIGNING_PASSWORD"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Publish and release to Maven Central
         run: ./gradlew --no-daemon publishAndReleaseToMavenCentral
         env:
@@ -151,7 +168,7 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ steps.signing.outputs.password }}
 
   github-release:
     runs-on: ubuntu-latest
