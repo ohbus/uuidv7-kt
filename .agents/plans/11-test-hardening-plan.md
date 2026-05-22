@@ -1,14 +1,14 @@
 ---
 name: Test Hardening Plan
-status: Planned
+status: Completed
 progress:
-  - "[ ] Add RFC bit-layout tests"
-  - "[ ] Add repeated invariant tests"
-  - "[ ] Add Java interop tests"
-  - "[ ] Add null-contract tests"
-  - "[ ] Add stronger concurrency tests"
-  - "[ ] Add timeout guards to hot-loop tests"
-  - "[ ] Decide benchmark scope separately"
+  - "[x] Add RFC bit-layout tests"
+  - "[x] Add repeated invariant tests"
+  - "[x] Add Java interop tests"
+  - "[x] Add null-contract tests"
+  - "[x] Add stronger concurrency tests"
+  - "[x] Add timeout guards to hot-loop tests"
+  - "[x] Decide benchmark scope separately"
 ---
 
 # Test Hardening Plan
@@ -183,3 +183,11 @@ Future benchmark plan:
 8. Run default check.
 9. Run Java 17 and 21 matrix checks locally.
 10. Leave Java 8 and 11 checks to CI unless local toolchains are installed.
+
+## Completion Notes
+
+- Added RFC bit-layout tests that inspect UUID fields directly from `mostSignificantBits` and `leastSignificantBits`.
+- Added Java source interop coverage in `src/test/java/com/subhrodip/uuidv7/UUIDv7JavaInteropTest.java`.
+- Added strict null-contract coverage for Java callers.
+- Added bounded repeated invariant, same-millisecond, entropy-variation, and concurrent timestamp-group tests.
+- Verified locally with `.\gradlew.bat clean check`, `.\gradlew.bat check -PtestJavaVersion=17`, and `.\gradlew.bat check -PtestJavaVersion=21`.
