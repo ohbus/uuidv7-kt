@@ -7,7 +7,7 @@ progress:
   - "[x] Prepare signing"
   - "[x] Prepare Central Portal account"
   - "[x] Add Central workflow"
-  - "[ ] Validate first tagged deployment"
+  - "[ ] Validate first manual release deployment"
 ---
 
 # Maven Central Readiness Tracker
@@ -38,7 +38,8 @@ Prepare the project for Maven Central publishing through a guarded GitHub Action
 - [x] Signing is enabled only when `signingInMemoryKey` is present.
 - [x] GPG private key is available as `GPG_KEY_CONTENTS`.
 - [x] Signing key id is available as `SIGNING_KEY_ID`.
-- [x] No signing passphrase is required for the current key.
+- [x] Optional signing passphrase is available as `SIGNING_PASSWORD`.
+- [x] Blank `SIGNING_PASSWORD` is valid when the current key has no passphrase.
 - [ ] Validate signed publication in the first Maven Central release run.
 
 ## Central Publishing
@@ -47,5 +48,6 @@ Prepare the project for Maven Central publishing through a guarded GitHub Action
 - [x] Namespace is verified.
 - [x] Central publishing plugin is configured.
 - [x] Maven Central publishing is restricted to the `maven-central` GitHub Environment.
-- [x] Stable publishing runs only from `vX.Y.Z` tags that pass semver step validation.
-- [ ] First release tag to validate: `v0.0.1`.
+- [x] Stable publishing runs only from manual `release_name` input values matching `vX.Y.Z`.
+- [x] Release input values must pass semver step validation against existing release tags.
+- [ ] First release input to validate: `v0.0.1`.

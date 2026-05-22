@@ -29,7 +29,7 @@ Track tasks the user must do manually or explicitly approve before the project c
 - [ ] Protect `main`.
 - [ ] Require CI before merge.
 - [ ] Restrict tag creation for `v*` tags.
-- [ ] Decide whether releases require manual review before tagging.
+- [x] Releases require manual workflow input before tagging.
 - [ ] Confirm package visibility after first publish.
 - [ ] Confirm at least one consumer can authenticate to GitHub Packages.
 
@@ -39,8 +39,9 @@ Track tasks the user must do manually or explicitly approve before the project c
 - [x] Create Sonatype Central Portal account.
 - [x] Generate a GPG signing key.
 - [x] Store signing credentials as GitHub secrets.
+- [x] Store optional GPG passphrase as `SIGNING_PASSWORD`; leave blank if the key has no passphrase.
 - [x] Create GitHub Environment `maven-central` for deployment approval.
-- [ ] Validate first Maven Central publish from tag `v0.0.1`.
+- [ ] Validate first Maven Central publish from manual release input `v0.0.1`.
 
 Signing is configured in-memory and activated only when signing secrets are supplied.
 

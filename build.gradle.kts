@@ -14,7 +14,10 @@ plugins {
 
 group = "com.subhrodip"
 version =
-	System.getenv("GITHUB_REF_NAME")
+	System.getenv("RELEASE_NAME")
+		?.takeIf { it.matches(Regex("""v\d+\.\d+\.\d+""")) }
+		?.removePrefix("v")
+		?: System.getenv("GITHUB_REF_NAME")
 		?.takeIf { it.matches(Regex("""v\d+\.\d+\.\d+""")) }
 		?.removePrefix("v")
 		?: "0.0.1-SNAPSHOT"

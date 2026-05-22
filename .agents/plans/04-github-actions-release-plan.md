@@ -34,15 +34,15 @@ Provide minimal CI/CD through GitHub Actions without release bots or unnecessary
 
 `release.yml`:
 
-- Runs on tags matching `vX.Y.Z`.
-- Derives Gradle project version from the tag.
-- Fails if tag does not match the derived Gradle project version.
+- Runs manually with required `release_name` input matching `vX.Y.Z`.
+- Derives Gradle project version from the release input name.
+- Fails if release input name does not match the derived Gradle project version.
 - Fails if project version is a snapshot.
 - Allows the first release only as `v0.0.1`.
-- Allows later releases only when the tag is exactly one major, minor, or patch step after the previous release tag.
+- Allows later releases only when the release input name is exactly one major, minor, or patch step after the previous release tag.
 - Publishes to GitHub Packages through `publishAllPublicationsToGitHubPackagesRepository`.
 - Publishes to Maven Central only after approval from the `maven-central` GitHub Environment.
-- Creates a GitHub Release.
+- Creates the matching Git tag and GitHub Release after package publishing succeeds.
 - Attaches jar, sources jar, javadocs jar, generated POM, and SHA-256 checksums.
 
 ## Permissions
@@ -57,10 +57,10 @@ Provide minimal CI/CD through GitHub Actions without release bots or unnecessary
 - Do not publish stable versions from ordinary `main` merges.
 - Do not overwrite published versions.
 - If a release is bad, publish a patch release.
-- Do not create the GitHub Release until GitHub Packages and Maven Central publication have both completed.
+- Do not create the release tag or GitHub Release until GitHub Packages and Maven Central publication have both completed.
 
 ## Verification Status
 
 - [x] Local jar, sources jar, javadocs jar, and generated POM were produced.
-- [ ] GitHub Release asset upload still needs validation on the first tag.
-- [ ] Maven Central environment approval still needs validation on the first tag.
+- [ ] GitHub Release asset upload still needs validation on the first manual release run.
+- [ ] Maven Central environment approval still needs validation on the first manual release run.

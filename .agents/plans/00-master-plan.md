@@ -49,7 +49,7 @@ The library should be minimal, fast, and boring to operate:
 - Public API is Java-friendly through `@JvmStatic`.
 - Existing UUIDv7 behavior is preserved where relevant.
 - The first snapshot can be consumed by a service without removing the local duplicated class.
-- Stable releases are immutable and tag-driven.
+- Stable releases are immutable and driven by the manual release workflow input name.
 
 ## Locked Decisions
 

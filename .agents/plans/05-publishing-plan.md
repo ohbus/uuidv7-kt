@@ -39,11 +39,13 @@ Publishing credentials:
 
 ## Maven Central
 
-- Stable Central publishing runs from `vX.Y.Z` tags only.
+- Stable Central publishing runs from the manual release workflow `release_name` input only.
+- The release input name must match `vX.Y.Z`.
+- The workflow creates the matching Git tag only after package publication succeeds.
 - Publishing requires the `maven-central` GitHub Environment approval.
 - Credentials come from `MAVEN_CENTRAL_USERNAME` and `MAVEN_CENTRAL_PASSWORD`.
-- Signing uses in-memory `GPG_KEY_CONTENTS` and `SIGNING_KEY_ID`.
-- Current signing key has no passphrase.
+- Signing uses in-memory `GPG_KEY_CONTENTS`, `SIGNING_KEY_ID`, and optional `SIGNING_PASSWORD`.
+- `SIGNING_PASSWORD` may be blank when the GPG key has no passphrase.
 - Central publishing must use `publishAndReleaseToMavenCentral`.
 
 ## Consumer Rules
