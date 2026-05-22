@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Validate version
+        run: |
+          VERSION="$(./gradlew properties -q | awk '/^version:/ { print $2 }')"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          test "$VERSION" = "$TAG_VERSION"
+          case "$VERSION" in
+            *-SNAPSHOT) echo "Release version cannot be SNAPSHOT"; exit 1 ;;
+          esac
+
+      - name: Build and publish
+        run: ./gradlew --no-daemon clean check publish
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create assets
+        run: |
+          VERSION="$(./gradlew properties -q | awk '/^version:/ { print $2 }')"
+          mkdir -p dist
+          cp build/libs/uuidv7-kt-${VERSION}.jar dist/
+          cp build/libs/uuidv7-kt-${VERSION}-sources.jar dist/
+          cp build/libs/uuidv7-kt-${VERSION}-javadoc.jar dist/
+          cp build/publications/mavenJava/pom-default.xml dist/uuidv7-kt-${VERSION}.pom
+          (cd dist && sha256sum * > SHA256SUMS)
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --title "uuidv7-kt ${GITHUB_REF_NAME#v}" \
+            --generate-notes
