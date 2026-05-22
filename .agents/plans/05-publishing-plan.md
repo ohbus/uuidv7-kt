@@ -2,9 +2,9 @@
 name: Publishing Plan
 status: Planned
 progress:
-  - "[ ] Publish first snapshot to GitHub Packages"
+  - "[x] Publish first snapshot to GitHub Packages"
   - "[ ] Consume snapshot from one service"
-  - "[ ] Publish first stable release"
+  - "[ ] Publish first stable release to GitHub Packages and Maven Central"
   - "[ ] Verify release assets"
   - "[ ] Document consumer setup"
 ---
@@ -13,14 +13,14 @@ progress:
 
 ## Goal
 
-Publish `com.subhrodip:uuidv7-kt` through GitHub Packages first, with future Maven Central readiness.
+Publish `com.subhrodip:uuidv7-kt` through GitHub Packages snapshots and Maven Central guarded stable releases.
 
 ## Coordinates
 
 - Group: `com.subhrodip`
 - Artifact: `uuidv7-kt`
-- Initial snapshot: `0.1.0-SNAPSHOT`
-- First stable release: `0.1.0`
+- Main branch snapshot: `0.0.1-SNAPSHOT`
+- First stable release: `0.0.1`
 
 ## GitHub Packages
 
@@ -35,6 +35,16 @@ Publishing credentials:
 - Use `GITHUB_ACTOR`.
 - Use `GITHUB_TOKEN`.
 - Do not create a personal access token for publishing from this repository unless GitHub permissions require it.
+- Snapshot publishing must use `publishAllPublicationsToGitHubPackagesRepository`, not generic `publish`.
+
+## Maven Central
+
+- Stable Central publishing runs from `vX.Y.Z` tags only.
+- Publishing requires the `maven-central` GitHub Environment approval.
+- Credentials come from `MAVEN_CENTRAL_USERNAME` and `MAVEN_CENTRAL_PASSWORD`.
+- Signing uses in-memory `GPG_KEY_CONTENTS` and `SIGNING_KEY_ID`.
+- Current signing key has no passphrase.
+- Central publishing must use `publishAndReleaseToMavenCentral`.
 
 ## Consumer Rules
 

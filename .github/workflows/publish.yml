@@ -35,7 +35,7 @@ jobs:
           esac
 
       - name: Publish snapshot
-        run: ./gradlew --no-daemon publish
+        run: ./gradlew --no-daemon publishAllPublicationsToGitHubPackagesRepository
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

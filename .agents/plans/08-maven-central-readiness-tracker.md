@@ -1,49 +1,51 @@
 ---
 name: Maven Central Readiness Tracker
-status: Planned
+status: In progress
 progress:
-  - "[ ] Confirm namespace"
-  - "[ ] Confirm POM metadata"
-  - "[ ] Prepare signing later"
-  - "[ ] Prepare Central Portal account"
-  - "[ ] Add Central workflow later"
+  - "[x] Confirm namespace"
+  - "[x] Confirm POM metadata"
+  - "[x] Prepare signing"
+  - "[x] Prepare Central Portal account"
+  - "[x] Add Central workflow"
+  - "[ ] Validate first tagged deployment"
 ---
 
 # Maven Central Readiness Tracker
 
 ## Goal
 
-Prepare the project for Maven Central without implementing Maven Central publishing in v1.
+Prepare the project for Maven Central publishing through a guarded GitHub Actions release flow.
 
 ## Namespace
 
-- [ ] Confirm whether `com.subhrodip` can be verified.
-- [ ] If not, use `io.github.subhrodip` for Maven Central.
-- [ ] Avoid changing coordinates after `1.0.0` unless absolutely required.
+- [x] `com.subhrodip` namespace is verified.
+- [x] Coordinates remain `com.subhrodip:uuidv7-kt`.
+- [x] Avoid changing coordinates after the first public release unless absolutely required.
 
 ## Metadata
 
-- [ ] POM has project name.
-- [ ] POM has description.
-- [ ] POM has project URL.
-- [ ] POM has license.
-- [ ] POM has developer metadata.
-- [ ] POM has SCM metadata.
-- [ ] Sources jar is generated.
-- [ ] Javadocs jar is generated.
+- [x] POM has project name.
+- [x] POM has description.
+- [x] POM has project URL.
+- [x] POM has license.
+- [x] POM has developer metadata.
+- [x] POM has SCM metadata.
+- [x] Sources jar is generated.
+- [x] Javadocs jar is generated.
 
 ## Signing
 
-- [ ] Keep signing out of the initial Gradle build.
-- [ ] Generate GPG key.
-- [ ] Store private key as GitHub secret only when needed.
-- [ ] Store passphrase as GitHub secret only when needed.
-- [ ] Validate signed local publication before Central release.
+- [x] Signing is enabled only when `signingInMemoryKey` is present.
+- [x] GPG private key is available as `GPG_KEY_CONTENTS`.
+- [x] Signing key id is available as `SIGNING_KEY_ID`.
+- [x] No signing passphrase is required for the current key.
+- [ ] Validate signed publication in the first Maven Central release run.
 
 ## Central Publishing
 
-- [ ] Create Sonatype Central Portal account.
-- [ ] Verify namespace.
-- [ ] Add Central publishing plugin only when ready.
-- [ ] Start with manual workflow dispatch.
-- [ ] Automate only after at least one successful manual Central publish.
+- [x] Central Portal account exists.
+- [x] Namespace is verified.
+- [x] Central publishing plugin is configured.
+- [x] Maven Central publishing is restricted to the `maven-central` GitHub Environment.
+- [x] Stable publishing runs only from `vX.Y.Z` tags that pass semver step validation.
+- [ ] First release tag to validate: `v0.0.1`.

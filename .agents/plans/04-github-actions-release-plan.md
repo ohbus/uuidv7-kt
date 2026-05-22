@@ -5,8 +5,9 @@ progress:
   - "[x] Add CI workflow"
   - "[x] Add snapshot publish workflow"
   - "[x] Add release workflow"
-  - "[ ] Validate package publishing permissions"
+  - "[x] Validate package publishing permissions"
   - "[x] Validate release asset generation"
+  - "[ ] Validate Maven Central environment approval"
 ---
 
 # GitHub Actions Release Plan
@@ -34,9 +35,13 @@ Provide minimal CI/CD through GitHub Actions without release bots or unnecessary
 `release.yml`:
 
 - Runs on tags matching `vX.Y.Z`.
-- Fails if tag does not match Gradle project version.
+- Derives Gradle project version from the tag.
+- Fails if tag does not match the derived Gradle project version.
 - Fails if project version is a snapshot.
-- Publishes to GitHub Packages.
+- Allows the first release only as `v0.0.1`.
+- Allows later releases only when the tag is exactly one major, minor, or patch step after the previous release tag.
+- Publishes to GitHub Packages through `publishAllPublicationsToGitHubPackagesRepository`.
+- Publishes to Maven Central only after approval from the `maven-central` GitHub Environment.
 - Creates a GitHub Release.
 - Attaches jar, sources jar, javadocs jar, generated POM, and SHA-256 checksums.
 
@@ -45,14 +50,17 @@ Provide minimal CI/CD through GitHub Actions without release bots or unnecessary
 - CI: `contents: read`.
 - Publish: `contents: read`, `packages: write`.
 - Release: `contents: write`, `packages: write`.
+- Maven Central credentials are scoped to the `publish-maven-central` job.
 
 ## Release Policy
 
 - Do not publish stable versions from ordinary `main` merges.
 - Do not overwrite published versions.
 - If a release is bad, publish a patch release.
+- Do not create the GitHub Release until GitHub Packages and Maven Central publication have both completed.
 
 ## Verification Status
 
 - [x] Local jar, sources jar, javadocs jar, and generated POM were produced.
-- [ ] GitHub Release asset upload still needs validation after the remote repository exists.
+- [ ] GitHub Release asset upload still needs validation on the first tag.
+- [ ] Maven Central environment approval still needs validation on the first tag.

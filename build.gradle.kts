@@ -1,15 +1,23 @@
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
+import com.vanniktech.maven.publish.KotlinJvm
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.SourcesJar
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
 	kotlin("jvm") version "2.3.21"
 	id("org.jetbrains.dokka-javadoc") version "2.2.0"
+	id("com.vanniktech.maven.publish") version "0.36.0"
 	`java-library`
 	`maven-publish`
 }
 
 group = "com.subhrodip"
-version = "0.1.0-SNAPSHOT"
+version =
+	System.getenv("GITHUB_REF_NAME")
+		?.takeIf { it.matches(Regex("""v\d+\.\d+\.\d+""")) }
+		?.removePrefix("v")
+		?: "0.0.1-SNAPSHOT"
 description = "Fast Kotlin UUIDv7 generator and utilities following RFC 9562."
 
 kotlin {
@@ -24,13 +32,6 @@ kotlin {
 
 java {
 	withSourcesJar()
-}
-
-val dokkaJavadocJar by tasks.registering(Jar::class) {
-	description = "Assembles Kotlin API documentation in Javadoc format."
-	group = JavaBasePlugin.DOCUMENTATION_GROUP
-	archiveClassifier.set("javadoc")
-	from(tasks.named("dokkaGeneratePublicationJavadoc"))
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -69,40 +70,6 @@ tasks.jar {
 }
 
 publishing {
-	publications {
-		create<MavenPublication>("mavenJava") {
-			from(components["java"])
-			artifact(dokkaJavadocJar)
-
-			pom {
-				name.set("uuidv7-kt")
-				description.set(project.description)
-				url.set("https://github.com/ohbus/uuidv7-kt")
-
-				licenses {
-					license {
-						name.set("MIT License")
-						url.set("https://opensource.org/license/mit")
-					}
-				}
-
-				developers {
-					developer {
-						id.set("ohbus")
-						name.set("Subhrodip")
-						url.set("https://github.com/ohbus")
-					}
-				}
-
-				scm {
-					connection.set("scm:git:https://github.com/ohbus/uuidv7-kt.git")
-					developerConnection.set("scm:git:ssh://git@github.com/ohbus/uuidv7-kt.git")
-					url.set("https://github.com/ohbus/uuidv7-kt")
-				}
-			}
-		}
-	}
-
 	repositories {
 		maven {
 			name = "GitHubPackages"
@@ -111,6 +78,52 @@ publishing {
 				username = System.getenv("GITHUB_ACTOR")
 				password = System.getenv("GITHUB_TOKEN")
 			}
+		}
+	}
+}
+
+mavenPublishing {
+	coordinates("com.subhrodip", "uuidv7-kt", version.toString())
+
+	configure(
+		KotlinJvm(
+			javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationJavadoc"),
+			sourcesJar = SourcesJar.Sources(),
+		),
+	)
+
+	publishToMavenCentral(automaticRelease = true)
+
+	if (providers.gradleProperty("signingInMemoryKey").isPresent) {
+		signAllPublications()
+	}
+
+	pom {
+		name.set("uuidv7-kt")
+		description.set(project.description)
+		inceptionYear.set("2026")
+		url.set("https://github.com/ohbus/uuidv7-kt")
+
+		licenses {
+			license {
+				name.set("MIT License")
+				url.set("https://opensource.org/license/mit")
+				distribution.set("repo")
+			}
+		}
+
+		developers {
+			developer {
+				id.set("ohbus")
+				name.set("Subhrodip")
+				url.set("https://github.com/ohbus")
+			}
+		}
+
+		scm {
+			connection.set("scm:git:https://github.com/ohbus/uuidv7-kt.git")
+			developerConnection.set("scm:git:ssh://git@github.com/ohbus/uuidv7-kt.git")
+			url.set("https://github.com/ohbus/uuidv7-kt")
 		}
 	}
 }
