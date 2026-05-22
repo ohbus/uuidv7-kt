@@ -37,7 +37,7 @@ Publishing credentials:
 - Do not create a personal access token for publishing from this repository unless GitHub permissions require it.
 - Snapshot publishing must use `publishAllPublicationsToGitHubPackagesRepository`, not generic `publish`.
 - Stable release publishing requires approval from the `github-packages` GitHub Environment.
-- GitHub Release creation also requires approval from the `github-packages` GitHub Environment.
+- GitHub Release creation does not require separate approval after required publish jobs succeed.
 - Stable GitHub Packages versions are immutable; retry releases should disable `publish_github_packages` if that version already exists.
 
 ## Maven Central

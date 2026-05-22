@@ -44,7 +44,7 @@ Provide minimal CI/CD through GitHub Actions without release bots or unnecessary
 - Publishes to GitHub Packages through `publishAllPublicationsToGitHubPackagesRepository` only after approval from the `github-packages` GitHub Environment.
 - Allows skipping GitHub Packages only for retrying a release after the same version was already published there.
 - Publishes to Maven Central only after approval from the `maven-central` GitHub Environment.
-- Creates the matching Git tag and GitHub Release after package publishing succeeds and the `github-packages` environment is approved.
+- Creates the matching Git tag and GitHub Release automatically after required publish jobs succeed.
 - Attaches jar, sources jar, javadocs jar, generated POM, and SHA-256 checksums.
 
 ## Permissions

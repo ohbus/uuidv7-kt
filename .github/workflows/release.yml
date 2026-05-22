@@ -186,9 +186,6 @@ jobs:
       - publish-github-packages
       - publish-maven-central
     if: ${{ always() && needs.validate-release-version.result == 'success' && needs.publish-maven-central.result == 'success' && (needs.publish-github-packages.result == 'success' || needs.publish-github-packages.result == 'skipped') }}
-    environment:
-      name: github-packages
-      url: https://github.com/ohbus/uuidv7-kt/releases
 
     steps:
       - uses: actions/checkout@v6
