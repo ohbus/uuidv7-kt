@@ -36,12 +36,14 @@ Publishing credentials:
 - Use `GITHUB_TOKEN`.
 - Do not create a personal access token for publishing from this repository unless GitHub permissions require it.
 - Snapshot publishing must use `publishAllPublicationsToGitHubPackagesRepository`, not generic `publish`.
+- Stable GitHub Packages versions are immutable; retry releases should disable `publish_github_packages` if that version already exists.
 
 ## Maven Central
 
 - Stable Central publishing runs from the manual release workflow `release_name` input only.
 - The release input name must match `vX.Y.Z`.
 - The workflow creates the matching Git tag only after package publication succeeds.
+- For partial release retries, Maven Central can be rerun while skipping GitHub Packages if the package version already exists.
 - Publishing requires the `maven-central` GitHub Environment approval.
 - Credentials come from `MAVEN_CENTRAL_USERNAME` and `MAVEN_CENTRAL_PASSWORD`.
 - Signing uses in-memory `GPG_KEY_CONTENTS`, `SIGNING_KEY_ID`, and optional `SIGNING_PASSWORD`.

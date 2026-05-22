@@ -35,12 +35,14 @@ Provide minimal CI/CD through GitHub Actions without release bots or unnecessary
 `release.yml`:
 
 - Runs manually with required `release_name` input matching `vX.Y.Z`.
+- Has `publish_github_packages` input for retrying partial releases when GitHub Packages already contains the immutable version.
 - Derives Gradle project version from the release input name.
 - Fails if release input name does not match the derived Gradle project version.
 - Fails if project version is a snapshot.
 - Allows the first release only as `v0.0.1`.
 - Allows later releases only when the release input name is exactly one major, minor, or patch step after the previous release tag.
 - Publishes to GitHub Packages through `publishAllPublicationsToGitHubPackagesRepository`.
+- Allows skipping GitHub Packages only for retrying a release after the same version was already published there.
 - Publishes to Maven Central only after approval from the `maven-central` GitHub Environment.
 - Creates the matching Git tag and GitHub Release after package publishing succeeds.
 - Attaches jar, sources jar, javadocs jar, generated POM, and SHA-256 checksums.
