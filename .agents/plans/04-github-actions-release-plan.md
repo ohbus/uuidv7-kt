@@ -41,10 +41,10 @@ Provide minimal CI/CD through GitHub Actions without release bots or unnecessary
 - Fails if project version is a snapshot.
 - Allows the first release only as `v0.0.1`.
 - Allows later releases only when the release input name is exactly one major, minor, or patch step after the previous release tag.
-- Publishes to GitHub Packages through `publishAllPublicationsToGitHubPackagesRepository`.
+- Publishes to GitHub Packages through `publishAllPublicationsToGitHubPackagesRepository` only after approval from the `github-packages` GitHub Environment.
 - Allows skipping GitHub Packages only for retrying a release after the same version was already published there.
 - Publishes to Maven Central only after approval from the `maven-central` GitHub Environment.
-- Creates the matching Git tag and GitHub Release after package publishing succeeds.
+- Creates the matching Git tag and GitHub Release after package publishing succeeds and the `github-packages` environment is approved.
 - Attaches jar, sources jar, javadocs jar, generated POM, and SHA-256 checksums.
 
 ## Permissions
