@@ -4,3 +4,8 @@ out/
 *.iml
 .idea/
 *.log
+
+# Local agent planning/instructions
+AGENTS.md
+.agents/
+.agent/
