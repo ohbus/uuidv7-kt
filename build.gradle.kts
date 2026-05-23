@@ -20,7 +20,7 @@ version =
 		?: System.getenv("GITHUB_REF_NAME")
 		?.takeIf { it.matches(Regex("""v\d+\.\d+\.\d+""")) }
 		?.removePrefix("v")
-		?: "0.0.1-SNAPSHOT"
+		?: "0.0.2-SNAPSHOT"
 description = "Fast Kotlin UUIDv7 generator and utilities following RFC 9562."
 
 kotlin {
